@@ -1,0 +1,5 @@
+C:\Users\BamSt\source\repos\BeansChallenge\Beans-Challenge\BeansChallenge\obj\Debug\netstandard2.1\BeansChallenge.csproj.AssemblyReference.cache
+C:\Users\BamSt\source\repos\BeansChallenge\Beans-Challenge\BeansChallenge\obj\Debug\netstandard2.1\BeansChallenge.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\BamSt\source\repos\BeansChallenge\Beans-Challenge\BeansChallenge\obj\Debug\netstandard2.1\BeansChallenge.AssemblyInfoInputs.cache
+C:\Users\BamSt\source\repos\BeansChallenge\Beans-Challenge\BeansChallenge\obj\Debug\netstandard2.1\BeansChallenge.AssemblyInfo.cs
+C:\Users\BamSt\source\repos\BeansChallenge\Beans-Challenge\BeansChallenge\obj\Debug\netstandard2.1\BeansChallenge.csproj.CoreCompileInputs.cache
