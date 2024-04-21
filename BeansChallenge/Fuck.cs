@@ -3,21 +3,20 @@ using System.Collections.Generic;
 using HarmonyLib;
 using UnityEngine;
 using System.Text;
+using MTM101BaldAPI.Registers;
 
 namespace BeansChallenge
 {
-    [HarmonyPatch(typeof(EnvironmentController))]
-    [HarmonyPatch("SpawnNPCs")]
+    [HarmonyPatch(typeof(BaseGameManager))]
+    [HarmonyPatch("Start")]
     class Fuck
     {
-        static bool Prefix(EnvironmentController __instance)
+        static void Prefix(BaseGameManager __instance)
         {
-            for (int i = 0; i < BasePlugin.QuarterSizeLimit; i++)
+            for (int i = 0; i < (BasePlugin.QuarterSizeLimit * 10); i++)
             {
-                __instance.SpawnNPC(BasePlugin.GetResourceFromName<Beans>("Beans"), new IntVector2(0, 0));
+                __instance.levelObject.forcedNpcs = __instance.levelObject.forcedNpcs.AddToArray(NPCMetaStorage.Instance.Get(Character.Beans).value);
             }
-            __instance.SpawnNPC(BasePlugin.GetResourceFromName<Baldi>("Baldi"), new IntVector2(0, 0));
-            return false;
         }
     }
 }

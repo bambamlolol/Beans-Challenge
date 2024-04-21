@@ -11,8 +11,12 @@ namespace BeansChallenge
     class CaptionPatch
     {
         static void Postfix(SubtitleController __instance)
-        {
-            __instance.text.font = BasePlugin.GetResourceFromName<TMP_FontAsset>("COMIC_Pro");
+        {/*
+            if (BasePlugin.CaptionsToggle.Value)
+            {
+                __instance.text.font = BasePlugin.GetResourceFromName<TMP_FontAsset>("COMIC_Pro");
+            }
+            */
         }
     }
 }

@@ -1,9 +1,10 @@
-﻿using System.IO;
+﻿using System;
 using BepInEx;
 using HarmonyLib;
 using UnityEngine;
 using MTM101BaldAPI.Registers;
 using MTM101BaldAPI.OptionsAPI;
+using MTM101BaldAPI.AssetTools;
 using MTM101BaldAPI;
 
 namespace BeansChallenge
@@ -13,8 +14,11 @@ namespace BeansChallenge
     {
 		public WeightedNPC beans;
 		public static AdjustmentBars QSLBar;
+		public static MenuToggle CaptionsToggle;
 
 		public static int QuarterSizeLimit = 5;
+		public static BaseUnityPlugin instance;
+		public static AssetManager assetMan = new AssetManager();
 		void Awake()
 		{
 			Harmony harmony = new Harmony("bam.bam.baldiplus.beans");
@@ -23,21 +27,22 @@ namespace BeansChallenge
 			GeneratorManagement.Register(this, GenerationModType.Finalizer, levelGenStuff);
 
 			LoadingEvents.RegisterOnAssetsLoaded(optionsStuff, false);
+			instance = this;
+			assetMan.Add<Sprite>("titleGraphic", AssetLoader.SpriteFromTexture2D(AssetLoader.TextureFromMod(this, new string[]
+			{
+				"BeanMenu_Low.png"
+			}), 1f));
 		}
 
 		void levelGenStuff(string name, int id, LevelObject levelObject)
 		{
-			levelObject.potentialNPCs.RemoveAll(x => x.selection.Character == Character.Baldi);
-			levelObject.potentialNPCs.RemoveAll(a => a.selection.Character == Character.Playtime);
-			levelObject.potentialNPCs.RemoveAll(b => b.selection.Character == Character.Crafters);
-			levelObject.potentialNPCs.RemoveAll(c => c.selection.Character == Character.Bully);
-			levelObject.potentialNPCs.RemoveAll(d => d.selection.Character == Character.Prize);
-			levelObject.potentialNPCs.RemoveAll(e => e.selection.Character == Character.Cumulo);
-			levelObject.potentialNPCs.RemoveAll(f => f.selection.Character == Character.Sweep);
-			levelObject.potentialNPCs.RemoveAll(h => h.selection.Character == Character.Chalkles);
-			levelObject.potentialNPCs.RemoveAll(i => i.selection.Character == Character.Pomp);
-			levelObject.potentialNPCs.RemoveAll(j => j.selection.Character == Character.LookAt);
-			levelObject.potentialNPCs.RemoveAll(k => k.selection.Character == Character.DrReflex);
+			WeightedNPC beansW = new WeightedNPC();
+			beansW.selection = NPCMetaStorage.Instance.Get(Character.Beans).value;
+			levelObject.potentialNPCs.Clear();
+			levelObject.additionalNPCs = 0;
+			levelObject.potentialNPCs.Add(beansW);
+			
+			
 		}
 
 		public static T GetResourceFromName<T>(string name) where T : UnityEngine.Object
@@ -65,12 +70,16 @@ namespace BeansChallenge
 			if (Singleton<CoreGameManager>.Instance != null) return; // these settings can only be changed when an active game is NOT going
 			GameObject ob = CustomOptionsCore.CreateNewCategory(__instance, "Beans Challenge");
 
-			QSLBar = CustomOptionsCore.CreateAdjustmentBar(__instance, new Vector2(-92f, 0f), "Beans Amount", 5, "The Amount Of Beans", QuarterSizeLimit, () =>
+			QSLBar = CustomOptionsCore.CreateAdjustmentBar(__instance, new Vector2(-92f, 0f), "Beans Amount", 10, "The Amount Of Beans", QuarterSizeLimit, () =>
 			{
-				QuarterSizeLimit = QSLBar.GetRaw() * 10;
+				QuarterSizeLimit = QSLBar.GetRaw();
 			});
+			// = CustomOptionsCore.CreateToggleButton(__instance, new Vector2(20, 10), "Comic Sans Caption", true, "Decides if captions show comic sans");
+			//CaptionsToggle.Set(true);
 			// attach everything to the options menu
+			//CaptionsToggle.transform.SetParent(ob.transform, false);
 			QSLBar.transform.SetParent(ob.transform, false);
+			//QSLBar.transform.localScale = new Vector3(0.3f, 0.3f, 1);
 		}
 	}
 }
